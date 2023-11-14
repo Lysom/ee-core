@@ -1,6 +1,6 @@
 'use strict';
 
-const debug = require('debug')('ee-core:config');
+const debug = require('debug')('ee-core-copy:config');
 const path = require('path');
 const extend = require('../../../../utils/extend');
 const assert = require('assert');
@@ -76,7 +76,7 @@ module.exports = {
     // if (filename === 'config.default' && !filepath) {
     //   filepath = this.resolveModule(path.join(dirpath, 'config/config'));
     // }
-  
+
     const config = this.loadFile(filepath, this.appInfo, extraInject);
 
     if (!config) return null;

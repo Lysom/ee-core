@@ -1,4 +1,4 @@
-const debug = require('debug')('ee-core:ipcServer');
+const debug = require('debug')('ee-core-copy:ipcServer');
 const is = require('is-type-of');
 const { ipcMain } = require('electron');
 const path = require('path');
@@ -70,7 +70,7 @@ class IpcServer {
               fn = obj;
             }
             if (!fn) throw new Error('function not exists');
-            
+
             return fn;
           } catch (err) {
             Log.coreLogger.error('[ee-core] [socket/IpcServer] throw error:', err);
@@ -83,7 +83,7 @@ class IpcServer {
           try {
             const fn = findFn(self.app, channel);
             const result = await fn.call(self.app, params, event);
-  
+
             event.returnValue = result;
             event.reply(`${channel}`, result);
           } catch(e) {
@@ -98,7 +98,7 @@ class IpcServer {
           try {
             const fn = findFn(self.app, channel);
             const result = await fn.call(self.app, params, event);
-  
+
             return result;
           } catch(e) {
             Log.coreLogger.error('[ee-core] [socket/IpcServer] invoke/handle throw error:', e);

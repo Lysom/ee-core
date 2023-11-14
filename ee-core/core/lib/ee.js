@@ -7,7 +7,7 @@ const BaseContextClass = require('./utils/base_context_class');
 const utils = require('./utils');
 const Timing = require('./utils/timing');
 const EggConsoleLogger = require('egg-logger').EggConsoleLogger;
-const debug = require('debug')('ee-core:EeCore');
+const debug = require('debug')('ee-core-copy:EeCore');
 const EE_LOADER = Symbol.for('ee#loader');
 
 class EeCore extends KoaApplication {
@@ -26,7 +26,7 @@ class EeCore extends KoaApplication {
 
     super();
 
-    // todo 
+    // todo
     //this.context = null;
 
     this.timing = new Timing();
@@ -162,7 +162,7 @@ class EeCore extends KoaApplication {
    */
   get addon() {
     return this.loader ? this.loader.addon : {};
-  }  
+  }
 
   get [EE_LOADER]() {
     return require('./loader/ee_loader');

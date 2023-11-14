@@ -64,11 +64,14 @@ class HttpServer {
         await next();
       })
     // 加入中间件处理， middleware是一个方法 返回值是中间件（ctx, next）的异步函数
-    for (let middleware of config.middleware) {
-      if (is.function(middleware)) {
-        koaApp.use(middleware())
+    if (is.isArray(config.middleware)) {
+      for (let middleware of config.middleware) {
+        if (is.isFunction(middleware)) {
+          koaApp.use(middleware())
+        }
       }
     }
+
 
     koaApp.use(this.dispatch);
 
@@ -99,7 +102,7 @@ class HttpServer {
     let uriPath = ctx.request.path;
     const method = ctx.request.method;
     let params = ctx.request.query;
-    params = is.object(params) ? JSON.parse(JSON.stringify(params)) : {};
+    params = is.isObject(params) ? JSON.parse(JSON.stringify(params)) : {};
     const body = ctx.request.body;
 
     // 默认
@@ -127,7 +130,7 @@ class HttpServer {
       const cmd = uriPath.split('/').join('.');
       const args = (method == 'POST') ? body : params;
       let fn = null;
-      if (is.string(cmd)) {
+      if (is.isString(cmd)) {
         const actions = cmd.split('.');
         let obj = ctx.eeApp;
         actions.forEach(key => {

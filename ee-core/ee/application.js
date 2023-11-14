@@ -1,7 +1,7 @@
 const Exception = require('../exception');
 const { app } = require('electron');
 const path = require('path');
-const debug = require('debug')('ee-core:Appliaction');
+const debug = require('debug')('ee-core-copy:Appliaction');
 const EeApp = require('./eeApp');
 const Utils = require('../utils');
 const Ps = require('../ps');
@@ -21,7 +21,7 @@ class Appliaction extends EeApp {
       type: 'application',
       baseDir: path.join(app.getAppPath(), 'electron'),
       homeDir: app.getAppPath(),
-      framework: path.join(app.getAppPath(), 'node_modules', 'ee-core'),
+      framework: path.join(app.getAppPath(), 'node_modules', 'ee-core-copy'),
       appName: app.getName(),
       userHome: app.getPath('home'),
       appData: app.getPath('appData'),
@@ -94,7 +94,7 @@ class Appliaction extends EeApp {
     await this.createElectronApp();
 
     await this.InitModuleMode();
-  } 
+  }
 }
 
 module.exports = Appliaction;

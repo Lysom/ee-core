@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const fs = require('fs');
-const debug = require('debug')('ee-core:fileLoader');
+const debug = require('debug')('ee-core-copy:fileLoader');
 const path = require('path');
 const globby = require('globby');
 const is = require('is-type-of');
@@ -87,7 +87,7 @@ class FileLoader {
         } else {
           obj = target[property] || {};
         }
-        
+
         target[property] = obj;
         debug('loaded %s', properties);
         return obj;
@@ -132,7 +132,7 @@ class FileLoader {
     } else {
       files = Array.isArray(files) ? files : [ files ];
     }
-    
+
     let ignore = this.options.ignore;
     if (ignore) {
       ignore = Array.isArray(ignore) ? ignore : [ ignore ];
@@ -191,12 +191,12 @@ class FileLoader {
     const loader = this.options.loader;
     const target = this.options.target;
     let directories = this.options.directory;
-    
+
     if (!Array.isArray(directories)) {
       directories = [ directories ];
     }
 
-    // check addon 
+    // check addon
     const config = app.config.addons;
     let filterAddons = [];
     for (let key of Object.keys(config)) {
@@ -213,19 +213,19 @@ class FileLoader {
         let fullpath = path.join(directory, addonName, 'index');
         fullpath = loader.resolveModule(fullpath);
         if (!fs.statSync(fullpath).isFile()) continue;
-  
+
         let exports = getExports(fullpath, this.options, addonName);
         if (exports == null) continue;
-  
+
         const properties = [addonName];
         if (is.class(exports) || Utils.isBytecodeClass(exports)) {
           exports.prototype.pathName = addonName;
           exports.prototype.fullPath = fullpath;
         }
-  
+
         items.push({ fullpath, properties, exports });
       }
-  
+
       for (const item of items) {
         const property = item.properties[0];
         let obj = item.exports;
@@ -233,7 +233,7 @@ class FileLoader {
           obj[FULLPATH] = item.fullpath;
           obj[EXPORTS] = true;
         }
-        
+
         target[property] = obj;
       }
     }

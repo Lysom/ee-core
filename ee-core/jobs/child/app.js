@@ -1,9 +1,9 @@
 
 const is = require('is-type-of');
-const Exception = require('ee-core/exception');
-const Loader = require('ee-core/loader');
-const Log = require('ee-core/log');
-const UtilsCore = require('ee-core/core/lib/utils');
+const Exception = require('ee-core-copy/exception');
+const Loader = require('ee-core-copy/loader');
+const Log = require('ee-core-copy/log');
+const UtilsCore = require('ee-core-copy/core/lib/utils');
 
 // 开发环境下，ee-core是soft link
 // /node_modules[\\/]electron[\\/]/.test(process.execPath)
@@ -48,7 +48,7 @@ class ChildApp {
 
   /**
    * 运行脚本
-   */  
+   */
   run(msg = {}) {
     let filepath = msg.jobPath;
     let params = msg.jobParams;

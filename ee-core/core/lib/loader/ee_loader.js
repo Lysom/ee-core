@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
 const is = require('is-type-of');
-const debug = require('debug')('ee-core:EeLoader');
+const debug = require('debug')('ee-core-copy:EeLoader');
 const FileLoader = require('./file_loader');
 const ContextLoader = require('./context_loader');
 const Utils = require('../utils');
@@ -32,7 +32,7 @@ class EeLoader {
     this.app = this.options.app;
     this.timing = this.app.timing || new Timing();
     this[REQUIRE_COUNT] = 0;
-    
+
     /**
      * @member {Object} EeLoader#pkg
      * @see {@link AppInfo#pkg}
@@ -130,7 +130,7 @@ class EeLoader {
    */
   getAppInfo() {
     const env = this.serverEnv;
-    
+
     /**
      * Meta information of the application
      * @class AppInfo
@@ -191,7 +191,7 @@ class EeLoader {
       appUserDataDir: this.options.appUserData,
 
       /**
-       * system user home dir 
+       * system user home dir
        * @member {String} AppInfo#userHome
        */
       userHome: this.options.userHome,
@@ -205,13 +205,13 @@ class EeLoader {
       /**
        * application package status
        * @member {boolean} AppInfo#isPackaged
-       */      
+       */
       isPackaged: this.options.isPackaged,
 
       /**
        * application exec file dir
        * @member {String} AppInfo#execDir
-       */  
+       */
       execDir: this.options.execDir
     };
   }
@@ -356,7 +356,7 @@ class EeLoader {
     } else {
       new ContextLoader(opt).load();
     }
-    
+
     this.timing.end(timingKey);
   }
 
@@ -395,7 +395,7 @@ class EeLoader {
       } else if (filepath && filepath.endsWith('.js')) {
         fullpath = filepath + 'c';
       }
-      
+
       if (!fs.existsSync(filepath) && !fs.existsSync(fullpath)) {
         //this.options.logger.warn(`[ee-core] [core/lib/loader/ee_loader] resolveModule unknow filepath: ${filepath}`)
         return undefined;
@@ -413,7 +413,7 @@ class EeLoader {
     const json = JSON.parse(fs.readFileSync(filePath));
 
     return json;
-  }  
+  }
 }
 
 /**
