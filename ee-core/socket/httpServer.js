@@ -16,7 +16,7 @@ const Ps = require('../ps');
  * http server
  */
 class HttpServer {
-  constructor (app) {
+  constructor(app) {
     this.app = app;
     this.options = this.app.config.httpServer;
 
@@ -35,8 +35,9 @@ class HttpServer {
   /**
    * 创建服务
    */
-  create () {
+  create() {
     const app = this.app;
+    const config = app.config;
     const httpServer = this.options;
     const isHttps = httpServer?.https?.enable ?? false;
     let sslOptions = {};
@@ -62,7 +63,14 @@ class HttpServer {
         ctx.eeApp = app;
         await next();
       })
-      .use(this.dispatch);
+    // 加入中间件处理， middleware是一个方法 返回值是中间件（ctx, next）的异步函数
+    for (let middleware of config.middleware) {
+      if (is.function(middleware)) {
+        koaApp.use(middleware())
+      }
+    }
+
+    koaApp.use(this.dispatch);
 
     let msg = '[ee-core] [socket/http] server is: ' + url;
 
@@ -80,13 +88,13 @@ class HttpServer {
         msg = e ? e : msg;
         Log.coreLogger.info(msg);
       });
-    }  
+    }
   }
 
   /**
    * 路由分发
    */
-  async dispatch (ctx, next) {
+  async dispatch(ctx, next) {
     const config = ctx.eeApp.config.httpServer;
     let uriPath = ctx.request.path;
     const method = ctx.request.method;
