@@ -38,6 +38,7 @@ class HttpServer {
   create() {
     const app = this.app;
     const config = app.config;
+    const koaConfig = config.koaConfig || {};
     const httpServer = this.options;
     const isHttps = httpServer?.https?.enable ?? false;
     let sslOptions = {};
@@ -56,6 +57,14 @@ class HttpServer {
     const corsOptions = httpServer.cors;
 
     const koaApp = new Koa();
+    koaConfig.koa = koaApp;
+    const { preMiddleware = [], postMiddleware = [], errorHandler = null } = koaConfig;
+
+    // koa路由统一错误配置，通过ctx.app.emit('error')触发
+    if (is.isFunction(errorHandler)) {
+      koaApp.on('error', errorHandler)
+    }
+
     koaApp
       .use(cors(corsOptions))
       .use(koaBody(httpServer.body))
@@ -63,9 +72,10 @@ class HttpServer {
         ctx.eeApp = app;
         await next();
       })
-    // 加入中间件处理， middleware是一个方法 返回值是中间件（ctx, next）的异步函数
-    if (is.isArray(config.middleware)) {
-      for (let middleware of config.middleware) {
+
+    // 加入前置中间件处理， middleware是一个方法 返回值是中间件（ctx, next）的异步函数
+    if (is.isArray(preMiddleware)) {
+      for (let middleware of preMiddleware) {
         if (is.isFunction(middleware)) {
           koaApp.use(middleware())
         }
@@ -74,6 +84,15 @@ class HttpServer {
 
 
     koaApp.use(this.dispatch);
+
+    // 加入后置中间件处理， middleware是一个方法 返回值是中间件（ctx, next）的异步函数
+    if (is.isArray(postMiddleware)) {
+      for (let middleware of postMiddleware) {
+        if (is.isFunction(middleware)) {
+          koaApp.use(middleware())
+        }
+      }
+    }
 
     let msg = '[ee-core] [socket/http] server is: ' + url;
 
