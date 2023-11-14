@@ -1,6 +1,6 @@
 {
   "name": "ee-core-copy",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "copy from ee core, add http request koa middleware",
   "main": "index.js",
   "scripts": {
