@@ -64,11 +64,14 @@ class HttpServer {
         await next();
       })
     // 加入中间件处理， middleware是一个方法 返回值是中间件（ctx, next）的异步函数
-    for (let middleware of config.middleware) {
-      if (is.function(middleware)) {
-        koaApp.use(middleware())
+    if (is.isArray(config.middleware)) {
+      for (let middleware of config.middleware) {
+        if (is.isFunction(middleware)) {
+          koaApp.use(middleware())
+        }
       }
     }
+
 
     koaApp.use(this.dispatch);
 
