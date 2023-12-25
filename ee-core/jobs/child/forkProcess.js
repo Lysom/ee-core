@@ -23,7 +23,7 @@ class ForkProcess {
       processOptions: { 
         cwd: cwd,
         env: Ps.allEnv(), 
-        stdio: 'ignore' 
+        stdio: 'pipe' 
       }
     }, opt);
 
